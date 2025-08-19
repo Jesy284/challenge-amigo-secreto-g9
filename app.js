@@ -1,79 +1,114 @@
-// Vamos a crear nuestra lista de amigos
+// Lista para almacenar los amigos
 let amigos = [];
 
-// Función para agregar amigos a la lista
+// Elementos del DOM
+const inputAmigo = document.getElementById("amigo");
+const btnAgregar = document.getElementById("addAmigo");
+const btnSorteo = document.getElementById("btnSorteo");
+const btnReiniciar = document.getElementById("btnReiniciar");
+const listaAmigos = document.getElementById("listaAmigos");
+const resultado = document.getElementById("resultado");
+
+// Función para normalizar texto (quitar acentos y convertir a minúsculas)
+function normalizarTexto(texto) {
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, " ");
+}
+
+// Función para validar y limpiar nombre
+function limpiarNombre(nombre) {
+    // Eliminar espacios al inicio y final
+    let nombreLimpio = nombre.trim();
+    
+    // Reemplazar múltiples espacios por uno solo
+    nombreLimpio = nombreLimpio.replace(/\s{2,}/g, " ");
+    
+    return nombreLimpio;
+}
+
+// Función para agregar amigo a la lista
 function agregarAmigo() {
-    // Paso 1: Obtener el nombre del campo de texto
-    const inputAmigo = document.getElementById("amigo");
-    let nombre = inputAmigo.value.trim();
+    // Obtener y limpiar el nombre
+    let nombre = inputAmigo.value;
+    nombre = limpiarNombre(nombre);
     
-    // Paso 2: Normalizar espacios (quitar espacios extras)
-    nombre = nombre.replace(/\s+/g, ' ');
-    
-    // Validación 1: Que no esté vacío
-    if (nombre === '') {
-        alert("Por favor, escribe un nombre");
+    // Validar que no esté vacío
+    if (nombre === "") {
+        alert("Por favor, inserte un nombre.");
         return;
     }
     
-    // Validación 2: Que no esté repetido (ignorando mayúsculas y acentos)
+    // Validar que no esté repetido (ignorando mayúsculas y acentos)
     const existe = amigos.some(amigo => 
-        amigo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === 
-        nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        normalizarTexto(amigo) === normalizarTexto(nombre)
     );
     
     if (existe) {
-        alert(`${nombre} ya está en la lista ❤️`);
+        alert(`"${nombre}" ya está en la lista. Por favor, ingrese un nombre diferente.`);
         return;
     }
     
-    // Paso 3: Agregar a la lista y actualizar
+    // Agregar a la lista y actualizar
     amigos.push(nombre);
     mostrarLista();
     
-    // Paso 4: Limpiar el campo y poner foco
-    inputAmigo.value = '';
+    // Limpiar el campo y poner foco
+    inputAmigo.value = "";
     inputAmigo.focus();
 }
 
-// Función para mostrar la lista en pantalla
+// Función para mostrar la lista de amigos
 function mostrarLista() {
-    const listaHTML = document.getElementById("listaAmigos");
-    listaHTML.innerHTML = '';
+    listaAmigos.innerHTML = "";
     
-    amigos.forEach((amigo, index) => {
-        listaHTML.innerHTML += `
-        <div class="amigo-item">
-            <span class="numero">${index + 1}</span>
-            <span class="nombre">${amigo}</span>
-            <button class="eliminar" onclick="eliminarAmigo(${index})">
+    if (amigos.length === 0) {
+        listaAmigos.innerHTML = '<p class="lista-vacia">Aún no hay amigos agregados</p>';
+        return;
+    }
+    
+    amigos.forEach((nombre, index) => {
+        const amigoItem = document.createElement("div");
+        amigoItem.className = "amigo-item";
+        amigoItem.innerHTML = `
+            <span class="amigo-numero">${index + 1}</span>
+            <span class="amigo-nombre">${nombre}</span>
+            <button class="amigo-eliminar" title="Eliminar amigo">
                 <i class="fas fa-times"></i>
             </button>
-        </div>
         `;
+        
+        // Agregar evento de eliminación
+        amigoItem.querySelector(".amigo-eliminar").addEventListener("click", () => {
+            eliminarAmigo(index);
+        });
+        
+        listaAmigos.appendChild(amigoItem);
     });
 }
 
-// Función para eliminar un amigo
+// Función para eliminar amigo
 function eliminarAmigo(index) {
-    amigos.splice(index, 1); // Quitamos de la lista
-    mostrarLista(); // Actualizamos
+    amigos.splice(index, 1);
+    mostrarLista();
 }
 
-// Función para el sorteo
+// Función para sortear amigo secreto
 function sortearAmigo() {
     // Validar que haya suficientes amigos
     if (amigos.length < 2) {
-        alert("Necesitas al menos 2 amigos para sortear 💜");
+        alert("Necesitas al menos 2 amigos para sortear");
         return;
     }
     
     // Seleccionar ganador aleatorio
-    const ganadorIndex = Math.floor(Math.random() * amigos.length);
-    const ganador = amigos[ganadorIndex];
+    const indiceGanador = Math.floor(Math.random() * amigos.length);
+    const ganador = amigos[indiceGanador];
     
     // Mostrar resultado
-    document.getElementById("resultado").innerHTML = `
+    resultado.innerHTML = `
         <div class="ganador-container">
             <div class="corona">👑</div>
             <div class="ganador-nombre">${ganador}</div>
@@ -81,30 +116,73 @@ function sortearAmigo() {
         </div>
     `;
     
-    // Deshabilitar botones después del sorteo
-    document.getElementById("amigo").disabled = true;
-    document.getElementById("addAmigo").disabled = true;
-    document.getElementById("btnSorteo").disabled = true;
+    // Deshabilitar controles
+    inputAmigo.disabled = true;
+    btnAgregar.disabled = true;
+    btnSorteo.disabled = true;
+    
+    // Cambiar títulos
+    inputAmigo.title = "Reinicia el sorteo para añadir más amigos";
+    btnAgregar.title = "Reinicia el sorteo para añadir más amigos";
+    btnSorteo.title = "Ya se realizó el sorteo";
 }
 
 // Función para reiniciar todo
 function reiniciar() {
-    amigos = []; // Vaciar lista
-    mostrarLista(); // Actualizar pantalla
-    document.getElementById("resultado").innerHTML = '';
+    // Vaciar lista
+    amigos = [];
     
-    // Habilitar campos
-    document.getElementById("amigo").disabled = false;
-    document.getElementById("addAmigo").disabled = false;
-    document.getElementById("btnSorteo").disabled = false;
+    // Limpiar interfaz
+    mostrarLista();
+    resultado.innerHTML = "";
+    inputAmigo.value = "";
+    
+    // Habilitar controles
+    inputAmigo.disabled = false;
+    btnAgregar.disabled = false;
+    btnSorteo.disabled = false;
+    
+    // Restaurar títulos
+    inputAmigo.title = "Solo letras, espacios y acentos. Usa ENTER para añadir";
+    btnAgregar.title = "Añadir amigo a la lista";
+    btnSorteo.title = "Realizar sorteo de amigo secreto";
     
     // Poner foco en el campo
-    document.getElementById("amigo").focus();
+    inputAmigo.focus();
 }
 
-// Función para validar tecla Enter
-function teclaEnter(event) {
+// Función para validar entrada de teclado
+function validarTecla(event) {
+    // Permitir tecla Enter para agregar
     if (event.key === "Enter") {
         agregarAmigo();
+        return false;
     }
+    
+    // Expresión regular permitida
+    const regex = /^[a-zA-ZáÁéÉíÍóÓúÚñÑ' ]$/;
+    
+    // Permitir teclas de control
+    const teclasPermitidas = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
+    if (teclasPermitidas.includes(event.key)) {
+        return true;
+    }
+    
+    // Validar caracter
+    return regex.test(event.key);
 }
+
+// Inicializar la aplicación
+function inicializar() {
+    // Configurar eventos
+    btnAgregar.addEventListener("click", agregarAmigo);
+    btnSorteo.addEventListener("click", sortearAmigo);
+    btnReiniciar.addEventListener("click", reiniciar);
+    inputAmigo.addEventListener("keypress", validarTecla);
+    
+    // Mostrar lista vacía inicial
+    mostrarLista();
+}
+
+// Iniciar cuando el documento esté listo
+document.addEventListener("DOMContentLoaded", inicializar);
