@@ -1,1 +1,277 @@
-Style css
+:root {
+    --color-primario: #8A2BE2;       /* Violeta */
+    --color-secundario: #DA70D6;     /* Orquídea */
+    --color-fondo: #F5E6FF;          /* Lila claro */
+    --color-texto: #4B0082;          /* Índigo */
+    --color-destacado: #E6E6FA;      /* Lavanda */
+    --color-eliminar: #FF6B6B;       /* Rojo suave */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(138, 43, 226, 0.15);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.content {
+    padding: 30px;
+}
+
+.input-group {
+    display: flex;
+    margin-bottom: 25px;
+    gap: 10px;
+}
+
+#amigo {
+    flex: 1;
+    padding: 15px 20px;
+    border: 2px solid var(--color-destacado);
+    border-radius: 50px;
+    font-size: 1.1rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+#amigo:focus {
+    border-color: var(--color-secundario);
+    box-shadow: 0 0 0 3px rgba(218, 112, 214, 0.2);
+}
+
+#addAmigo {
+    background: var(--color-secundario);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#addAmigo:hover {
+    background: var(--color-primario);
+    transform: translateY(-2px);
+}
+
+.name-list {
+    margin-bottom: 30px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.amigo-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    background: var(--color-destacado);
+    border-radius: 15px;
+    animation: fadeIn 0.4s;
+}
+
+.amigo-numero {
+    width: 35px;
+    height: 35px;
+    background: var(--color-secundario);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: 600;
+}
+
+.amigo-nombre {
+    flex: 1;
+    font-size: 1.1rem;
+}
+
+.amigo-eliminar {
+    background: none;
+    border: none;
+    color: var(--color-eliminar);
+    font-size: 1.3rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.amigo-eliminar:hover {
+    background: rgba(255, 107, 107, 0.1);
+    transform: scale(1.1);
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.buttons button {
+    flex: 1;
+    padding: 18px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#btnSorteo {
+    background: var(--color-primario);
+    color: white;
+}
+
+#btnSorteo:hover {
+    background: #7A1BD2;
+    transform: translateY(-3px);
+}
+
+#btnReiniciar {
+    background: #E6E6FA;
+    color: var(--color-texto);
+}
+
+#btnReiniciar:hover {
+    background: #D8BFD8;
+    transform: translateY(-3px);
+}
+
+#resultado {
+    margin-top: 30px;
+    text-align: center;
+    padding: 20px;
+}
+
+.ganador-container {
+    background: linear-gradient(135deg, #F5E6FF, #E6E6FA);
+    border-radius: 20px;
+    padding: 40px 20px;
+    animation: popIn 0.6s;
+}
+
+.corona {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+    color: var(--color-primario);
+}
+
+.ganador-nombre {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primario);
+    margin-bottom: 15px;
+}
+
+.mensaje {
+    font-size: 1.5rem;
+    color: var(--color-texto);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .buttons {
+        flex-direction: column;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    #amigo {
+        width: 100%;
+    }
+    
+    #addAmigo {
+        width: 100%;
+        padding: 15px;
+        justify-content: center;
+    }
+    
+    header {
+        padding: 30px 15px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+}
