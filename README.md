@@ -5,7 +5,10 @@ Descripción
 Amigo Secreto, es un desarrollo web solicitado por Alura para el programa de capacitación Oracle ONE, este desarrollo web tiene por objeto, permitir al usuario ingresar nombres de sus amigos en una lista y luego realizar un sorteo aleatorio para determinar quien es el amigo secreto.
 ![Interfaz principal](./img-md/principal.png.png)
 
-El usuario deberá agregar nombres mediante un campo de texto y un botón "Añadir". Los nombres ingresados se mostrarán en una lista visible en la página, y al finalizar, un botón "Sortear" seleccionará uno de los nombres de forma aleatoria, mostrando el resultado en pantalla.
+El usuario deberá agregar nombres mediante un campo de texto y un botón "Añadir".
+![Descripción de la imagen](./img-md/input.png)
+Los nombres ingresados se mostrarán en una lista visible en la página, y al finalizar, un botón "Sortear" seleccionará uno de los nombres de forma aleatoria, mostrando el resultado en pantalla.
+![Descripción de la imagen](./img-md/.png)
 
 Fucionalidades:
 Agregar nombres: Los usuarios escribirán el nombre de un amigo en un campo de texto y lo agregarán a una lista visible al hacer clic en "Añadir".
