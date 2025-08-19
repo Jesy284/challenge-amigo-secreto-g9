@@ -3,47 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-    <title>Amigo Secreto</title>
+    <title>Amigo Secreto | Alura Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS con paleta femenina */
+        :root {
+            --color-primario: #8A2BE2;       /* Violeta */
+            --color-secundario: #DA70D6;     /* Orquídea */
+            --color-fondo: #F5E6FF;          /* Lila claro */
+            --color-texto: #4B0082;          /* Índigo */
+            --color-destacado: #E6E6FA;      /* Lavanda */
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(138, 43, 226, 0.15);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-group {
+            display: flex;
+            margin-bottom: 25px;
+        }
+        
+        #amigo {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--color-destacado);
+            border-radius: 50px 0 0 50px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #amigo:focus {
+            border-color: var(--color-secundario);
+            box-shadow: 0 0 0 3px rgba(218, 112, 214, 0.2);
+        }
+        
+        #addAmigo {
+            background: var(--color-secundario);
+            color: white;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            padding: 0 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        #addAmigo:hover {
+            background: var(--color-primario);
+        }
+        
+        #listaAmigos {
+            margin-bottom: 30px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .amigo-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: var(--color-destacado);
+            border-radius: 15px;
+            animation: fadeIn 0.4s;
+        }
+        
+        .numero {
+            width: 35px;
+            height: 35px;
+            background: var(--color-secundario);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: 600;
+        }
+        
+        .nombre {
+            flex: 1;
+            font-size: 1.1rem;
+        }
+        
+        .eliminar {
+            background: none;
+            border: none;
+            color: var(--color-primario);
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .eliminar:hover {
+            background: rgba(138, 43, 226, 0.1);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #btnSorteo {
+            background: var(--color-primario);
+            color: white;
+        }
+        
+        #btnSorteo:hover {
+            background: #7A1BD2;
+            transform: translateY(-3px);
+        }
+        
+        #btnReiniciar {
+            background: #E6E6FA;
+            color: var(--color-texto);
+        }
+        
+        #btnReiniciar:hover {
+            background: #D8BFD8;
+            transform: translateY(-3px);
+        }
+        
+        #resultado {
+            margin-top: 30px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .ganador-container {
+            background: linear-gradient(135deg, #F5E6FF, #E6E6FA);
+            border-radius: 20px;
+            padding: 40px 20px;
+            animation: popIn 0.6s;
+        }
+        
+        .corona {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .ganador-nombre {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primario);
+            margin-bottom: 15px;
+        }
+        
+        .mensaje {
+            font-size: 1.5rem;
+            color: var(--color-texto);
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            #amigo {
+                border-radius: 50px;
+                margin-bottom: 10px;
+            }
+            
+            #addAmigo {
+                border-radius: 50px;
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <main class="main-content">
-        <header class="header-banner">
-            <h1 class="main-title">Amigo Secreto</h1>
-            <img src="assets/amigo-secreto.png" alt="Imagen representativa de amigo secreto">
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-gift"></i> Amigo Secreto</h1>
+            <p class="subtitle">Agrega nombres y descubre quién será tu amigo secreto</p>
         </header>
         
-        <section class="input-section">
-            <h2 class="section-title">Digite el nombre de sus amigos</h2>
-            <div class="input-wrapper">
-                <input type="text" id="amigo" class="input-name" placeholder="Escribe un nombre ⌨️" onkeypress="return validaTecla(event)">
-                <button id="addAmigo" class="button-add" onclick="agregarAmigo()">Añadir</button>
-            </div>
-           
-            <ul id="listaAmigos" class="name-list" aria-labelledby="listaAmigos" role="list"></ul>
-            <ul id="resultado" class="result-list" aria-live="polite"></ul>
-
-            <div class="button-container">
-                <button id="btnSorteo"class="button-draw" onclick="sortearAmigo()" aria-label="Sortear amigo secreto">
-                    <img src="assets/play_circle_outline.png" alt="Ícono para sortear">
-                    Sortear amigo
+        <div class="content">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="amigo" 
+                    placeholder="Escribe un nombre..."
+                    onkeypress="teclaEnter(event)"
+                >
+                <button id="addAmigo" onclick="agregarAmigo()">
+                    <i class="fas fa-plus"></i> Añadir
                 </button>
             </div>
-            <!-- Añado nuevo boton para reiniciar sorteo-->
-            <br/>
-            <div class="button-container">
-                <button id="btnReiniciar" class="button-draw" onclick="reiniciaEstados()" aria-label="Realizar otro sorteo">
-                    <img id="reiniciaImg" src="assets/reiniciar.png" alt="Nuevo Sorteo">
-                    Reiniciar Sorteo</button>
+            
+            <div id="listaAmigos"></div>
+            
+            <div class="buttons">
+                <button id="btnSorteo" onclick="sortearAmigo()">
+                    <i class="fas fa-random"></i> Sortear
+                </button>
+                <button id="btnReiniciar" onclick="reiniciar()">
+                    <i class="fas fa-redo"></i> Reiniciar
+                </button>
             </div>
-        </section>
-    </main>
+            
+            <div id="resultado"></div>
+        </div>
+    </div>
 
-    <script src="app.js"></script>
+    <script>
+        // Aquí va todo el código JavaScript que creamos arriba
+        // [// Vamos a crear nuestra lista de amigos
+let amigos = [];
+
+// Función para agregar amigos a la lista
+function agregarAmigo() {
+    // Paso 1: Obtener el nombre del campo de texto
+    const inputAmigo = document.getElementById("amigo");
+    let nombre = inputAmigo.value.trim();
+    
+    // Paso 2: Normalizar espacios (quitar espacios extras)
+    nombre = nombre.replace(/\s+/g, ' ');
+    
+    // Validación 1: Que no esté vacío
+    if (nombre === '') {
+        alert("Por favor, escribe un nombre");
+        return;
+    }
+    
+    // Validación 2: Que no esté repetido (ignorando mayúsculas y acentos)
+    const existe = amigos.some(amigo => 
+        amigo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === 
+        nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    );
+    
+    if (existe) {
+        alert(`${nombre} ya está en la lista ❤️`);
+        return;
+    }
+    
+    // Paso 3: Agregar a la lista y actualizar
+    amigos.push(nombre);
+    mostrarLista();
+    
+    // Paso 4: Limpiar el campo y poner foco
+    inputAmigo.value = '';
+    inputAmigo.focus();
+}
+
+// Función para mostrar la lista en pantalla
+function mostrarLista() {
+    const listaHTML = document.getElementById("listaAmigos");
+    listaHTML.innerHTML = '';
+    
+    amigos.forEach((amigo, index) => {
+        listaHTML.innerHTML += `
+        <div class="amigo-item">
+            <span class="numero">${index + 1}</span>
+            <span class="nombre">${amigo}</span>
+            <button class="eliminar" onclick="eliminarAmigo(${index})">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        `;
+    });
+}
+
+// Función para eliminar un amigo
+function eliminarAmigo(index) {
+    amigos.splice(index, 1); // Quitamos de la lista
+    mostrarLista(); // Actualizamos
+}
+
+// Función para el sorteo
+function sortearAmigo() {
+    // Validar que haya suficientes amigos
+    if (amigos.length < 2) {
+        alert("Necesitas al menos 2 amigos para sortear 💜");
+        return;
+    }
+    
+    // Seleccionar ganador aleatorio
+    const ganadorIndex = Math.floor(Math.random() * amigos.length);
+    const ganador = amigos[ganadorIndex];
+    
+    // Mostrar resultado
+    document.getElementById("resultado").innerHTML = `
+        <div class="ganador-container">
+            <div class="corona">👑</div>
+            <div class="ganador-nombre">${ganador}</div>
+            <div class="mensaje">¡Es tu amigo secreto!</div>
+        </div>
+    `;
+    
+    // Deshabilitar botones después del sorteo
+    document.getElementById("amigo").disabled = true;
+    document.getElementById("addAmigo").disabled = true;
+    document.getElementById("btnSorteo").disabled = true;
+}
+
+// Función para reiniciar todo
+function reiniciar() {
+    amigos = []; // Vaciar lista
+    mostrarLista(); // Actualizar pantalla
+    document.getElementById("resultado").innerHTML = '';
+    
+    // Habilitar campos
+    document.getElementById("amigo").disabled = false;
+    document.getElementById("addAmigo").disabled = false;
+    document.getElementById("btnSorteo").disabled = false;
+    
+    // Poner foco en el campo
+    document.getElementById("amigo").focus();
+}
+
+// Función para validar tecla Enter
+function teclaEnter(event) {
+    if (event.key === "Enter") {
+        agregarAmigo();
+    }
+}]
+    </script>
 </body>
 </html>
 
