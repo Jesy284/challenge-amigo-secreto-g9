@@ -1,5 +1,5 @@
 <h1> desafio-amigo-secreto-g9</h1>
-
+![Descripción de la imagen](./img-md/header.png)
 Amigo Secreto
 Descripción
 Amigo Secreto, es un desarrollo web solicitado por Alura para el programa de capacitación Oracle ONE, este desarrollo web tiene por objeto, permitir al usuario ingresar nombres de sus amigos en una lista y luego realizar un sorteo aleatorio para determinar quien es el amigo secreto.
